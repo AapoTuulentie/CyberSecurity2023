@@ -1,3 +1,5 @@
 from django.contrib import admin
+from cs_project.models import Note
 
-# Register your models here.
+admin.site.register(Note)
+

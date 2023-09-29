@@ -1,22 +1,26 @@
-<!DOCTYPE html>
-<head>
-    <title>Homepage</title>
-</head>
+{% extends "layout.html" %}
+{% block content %}
 
 {% if user.is_authenticated %}
     <h3>Username: {{ user.username}}</h3>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 
 <h2>Add note:</h2>
-<form method="POST" class="addnote">
+<form action='add/' method="POST" class="addnote">
+    {% csrf_token %}
     <input type="text" name="note">
     <input type="submit">
 </form>
 
-
+<table>
+    {% for n in notes %}
+    {{ n.text }}
+    {% endfor %} 
+</table>
 
 
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a>
 {% endif %}
+{% endblock %}

@@ -3,10 +3,13 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from .models import Note
 
 @login_required
 def index(request):
-    return render(request, 'index.html')
+    note = Note.objects.filter(owner=request.user)
+    notes = [{'text': n.text} for n in note]
+    return render(request, 'index.html', {'notes':notes})
 
 def register(request):
     if request.method == 'POST':
@@ -16,7 +19,7 @@ def register(request):
 
         if password1 == password2:
             user = User.objects.create_user(username=username, password = password1)
-            user.save();
+            user.save()
             return redirect('/login')
         else:
             messages.info(request, "Password not the same")
@@ -49,5 +52,8 @@ def register(request):
 #       return render(request, 'register.html')
 
 
-
-
+def add_note(request):
+    text = request.POST['note']
+    n = Note(owner=request.user, text=text)
+    n.save()
+    return redirect('/')
