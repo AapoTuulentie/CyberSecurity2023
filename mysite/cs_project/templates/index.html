@@ -15,6 +15,13 @@
 <table>
     {% for n in notes %}
     {{ n.text }}
+<form action="delete/{{ n.id }}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ n.id }}">
+    <input type="submit" value="Delete">
+
+</form>
+    <br>
     {% endfor %} 
 </table>
 

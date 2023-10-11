@@ -1,11 +1,12 @@
 from django.urls import path
 from django.contrib import admin, auth
-from .views import index
+from .views import viewnotes, deletenote
 from . import views
 
 
 urlpatterns = [
-    path('', index, name='home'),
+    path('', viewnotes, name='home'),
     path('register/', views.register, name='register'),
-    path('add/', views.add_note, name='add')
+    path('add/', views.add_note, name='add'),
+    path('delete/<int:noteid>', deletenote, name='delete'),
 ]

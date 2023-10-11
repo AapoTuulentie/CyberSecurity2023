@@ -51,9 +51,29 @@ def register(request):
 #   else:
 #       return render(request, 'register.html')
 
-
+@login_required
 def add_note(request):
     text = request.POST['note']
     n = Note(owner=request.user, text=text)
     n.save()
     return redirect('/')
+
+@login_required
+def viewnotes(request):
+    x = Note.objects.filter(owner=request.user)
+    notes = [{'id': n.id, 'text': n.text} for n in x]
+    return render(request, 'index.html', {'notes': notes})
+
+@login_required
+def deletenote(request, noteid):
+    n = Note.objects.get(pk=noteid)
+    n.delete()
+    return redirect('/')
+
+#   FIX FOR FLAW 2
+#   @login_required
+#   def deletenote(request, noteid):
+#       n = Note.objects.get(pk=noteid)
+#       if request.user == n.owner:
+#           n.delete()
+#       return redirect('/')
