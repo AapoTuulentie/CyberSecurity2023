@@ -77,3 +77,9 @@ def deletenote(request, noteid):
 #       if request.user == n.owner:
 #           n.delete()
 #       return redirect('/')
+
+@login_required
+def searchnotes(request):
+    query = request.POST['search']
+    sql = Note.objects.raw("SQL QUERY TÄHÄN")
+    return 
