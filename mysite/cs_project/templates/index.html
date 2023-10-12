@@ -6,7 +6,7 @@
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 
 <h3>Search from your notes:</h3>
-<form action="search/" method="POST">
+<form action="" method="POST">
     {% csrf_token %}
     <input type="text" name="search">
     <input type="submit">
@@ -19,15 +19,16 @@
     <input type="submit">
 </form>
 
+<br>
 <table>
     {% for n in notes %}
     {{ n.text }}
-<form action="delete/{{ n.id }}" method="POST">
+    <form action="delete/{{ n.id }}" method="POST">
     {% csrf_token %}
     <input type="hidden" name="id" value="{{ n.id }}">
     <input type="submit" value="Delete">
 
-</form>
+    </form>
     <br>
     {% endfor %} 
 </table>

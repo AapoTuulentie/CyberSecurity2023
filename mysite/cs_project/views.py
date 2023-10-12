@@ -60,9 +60,15 @@ def add_note(request):
 
 @login_required
 def viewnotes(request):
-    x = Note.objects.filter(owner=request.user)
-    notes = [{'id': n.id, 'text': n.text} for n in x]
-    return render(request, 'index.html', {'notes': notes})
+    if request.method == 'POST':
+        query = request.POST['search']
+        sql = "SELECT * FROM cs_project_note WHERE text LIKE '%" + query + "%'"
+        notes = Note.objects.raw(sql)
+        return render(request, 'index.html', {'notes': notes})
+    else:
+        x = Note.objects.filter(owner=request.user)
+        notes = [{'id': n.id, 'text': n.text} for n in x]
+        return render(request, 'index.html', {'notes': notes})
 
 @login_required
 def deletenote(request, noteid):
@@ -78,8 +84,3 @@ def deletenote(request, noteid):
 #           n.delete()
 #       return redirect('/')
 
-@login_required
-def searchnotes(request):
-    query = request.POST['search']
-    sql = Note.objects.raw("SQL QUERY TÄHÄN")
-    return 
