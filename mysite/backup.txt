@@ -1,0 +1,11 @@
+@login_required
+def viewnotes(request):
+    if request.method == 'POST':
+        query = request.POST['search']
+        sql = "SELECT * FROM cs_project_note WHERE text LIKE '%" + query + "%'"
+        notes = Note.objects.filter(owner=request.user).raw(sql)
+        return render(request, 'index.html', {'notes': notes})
+    else:
+        x = Note.objects.filter(owner=request.user)
+        notes = [{'id': n.id, 'text': n.text} for n in x]
+        return render(request, 'index.html', {'notes': notes})
