@@ -130,3 +130,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK="bootstrap4"
+
+PASSWORD_HASHERS = [
+    "cs_project.hashers.UnsaltedMD5PasswordHasher"
+]
+
+# FIX FOR FLAW 4
+
+#   PASSWORD_HASHERS = [
+#    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+#    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+#    "django.contrib.auth.hashers.Argon2PasswordHasher",
+#    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+#    "django.contrib.auth.hashers.ScryptPasswordHasher",
+#]

@@ -54,7 +54,7 @@ def register(request):
 @login_required
 def add_note(request):
     text = request.POST['note']
-    n = Note(owner=request.user, text=text)
+    n = Note(owner=request.user, text=text, user_id=request.user.id)
     n.save()
     return redirect('/')
 
@@ -62,9 +62,9 @@ def add_note(request):
 def viewnotes(request):
     if request.method == 'POST':
         query = request.POST['search']
-        sql = "SELECT * FROM cs_project_note WHERE text LIKE '%" + query + "%'"
-        notes = Note.objects.filter(owner=request.user).raw(sql)
-        return render(request, 'index.html', {'notes': notes})
+        sql = "SELECT * FROM cs_project_note WHERE user_id='" + str(request.user.id) + "' and text LIKE '%" + query + "%'"
+        notes = Note.objects.raw(sql)
+        return render(request, 'index.html', {'notes': notes, 'query': query})
     else:
         x = Note.objects.filter(owner=request.user)
         notes = [{'id': n.id, 'text': n.text} for n in x]

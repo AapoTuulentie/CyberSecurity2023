@@ -18,7 +18,14 @@
     <input type="text" name="note">
     <input type="submit">
 </form>
-
+<br>
+{% if query == "" or query == null %}
+<h3>All Notes:</h3>
+{% else %}
+<h3>Searching by: "{{ query }}"</h3>
+{% endif %}
+<br>
+{{ user.password }}
 <br>
 <table>
     {% for n in notes %}
