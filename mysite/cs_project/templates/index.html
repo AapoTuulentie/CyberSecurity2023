@@ -25,19 +25,18 @@
 <h3>Searching by: "{{ query }}"</h3>
 {% endif %}
 <br>
-{{ user.password }}
 <br>
 <table>
-    {% for n in notes %}
-    {{ n.text }}
-    <form action="delete/{{ n.id }}" method="POST">
+{% for n in notes %}
+{{ n.text }}
+<form action="delete/{{ n.id }}" method="POST">
     {% csrf_token %}
     <input type="hidden" name="id" value="{{ n.id }}">
     <input type="submit" value="Delete">
 
-    </form>
-    <br>
-    {% endfor %} 
+</form>
+<br>
+{% endfor %} 
 </table>
 
 
