@@ -1,8 +1,8 @@
 This is a course project for CyberSecurity2023. It is meant to be a simple application that has flaws from the [OWASP 2017](https://owasp.org/www-project-top-ten/).
 
 ##### FLAW 1: Broken Authentication 
-
 [Link to the code](https://github.com/AapoTuulentie/CyberSecurity2023/blob/60c9e0a837f30fe1d93f42270db3ed507cc61168/mysite/cs_project/views.py#L14) 
+
 The first flaw in this project is broken authentication. There are a few deficiencies in the user registration requirements. Firstly, the minimum length of a password is not defined. A user can have a password that is only one character, when best practice is at least 8 characters. Also, a user can have a password that contains only numbers or only letters. A password should be at least a mix of these two, and preferably also contain capital letters or special characters.  
 
 A fix for this flaw is commented out below the register-function. Now it requires 8 characters and at least one number. This prevents attackers from using traditional brute force attacks with common password lists including passwords such as “123456” or “password”.  
@@ -28,8 +28,8 @@ This flaw can be fixed quite easily. The application needs to check if the owner
  
 
 ##### FLAW 4: Sensitive Data Exposure 
-
 [Link to the code](https://github.com/AapoTuulentie/CyberSecurity2023/blob/60c9e0a837f30fe1d93f42270db3ed507cc61168/mysite/mysite/settings.py#L134) 
+
 The fourth flaw is sensitive data exposure. Moving on from views.py to settings.py, there is a flaw in password hashing procedures. Django’s settings.py allows coders to modify the password hashers and use their own hashers. This application uses the outdated MD5 password hasher, which can be found in hashers.py file, that does not salt passwords. Salting means adding random data into a password string before hashing it and storing it into a database. Without salting, the hasher will always produce the same hash with the same password.  
 
 The fix uses five different hashers that are all salted. By default, Django will use the hasher listed on the top of the list, which in this case is PBKDF2PasswordHasher. It will also be able to use the rest of the hashers to validate the password, depending on which of them the password is hashed with. These hashers will provide a salted password hash, that makes a password much more difficult for attackers to crack. By cracking a password, the attacker gains access to sensitive data, thus making it fall under the category of sensitive data exposure.  
@@ -37,8 +37,8 @@ The fix uses five different hashers that are all salted. By default, Django will
  
 
 ##### FLAW 5: Insufficient Logging and Monitoring 
-
 [Link to the code](https://github.com/AapoTuulentie/CyberSecurity2023/blob/60c9e0a837f30fe1d93f42270db3ed507cc61168/mysite/mysite/settings.py#L148) 
+
 The fifth and final flaw in the application is insufficient logging and monitoring. In settings.py, logging is disabled with LOGGING_CONFIG = None. Now the application does not use any logging features. Without logging, the application does not leave any traces of security breach attempts and authentication errors. This will cause the administrators of the application to be unaware of the security risks. With logging disabled in this application, the administrators would not have any messages about the other flaws in the code, making them more difficult to notice. For example, if an attacker tried to do a brute force password spray attack, it would not leave any failed login-logs. 
 
 The fix includes a basic logger for Django. Now logging messages are sent to console in the handler section. DJANGO_LOG_LEVEL is set to INFO, which is the second most detailed logging level. It gives detailed information about the program. For example, console gets information about database queries, user activity and sessions. The log level could also be set to DEBUG mode, where the logging messages would be very detailed.
